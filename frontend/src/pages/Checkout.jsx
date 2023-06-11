@@ -19,7 +19,7 @@ const Checkout = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    
+
     const userShippingAddress = {
       name: enteredName,
       email: enteredEmail,
@@ -39,16 +39,23 @@ const Checkout = () => {
     })
       .then((response) => {
         if (response.ok) {
-          console.log('Order created successfully');
-          // Handle success, e.g., show a success message or redirect
+          return response.json();
         } else {
-          console.log('Failed to create order');
-          // Handle failure, e.g., show an error message
+          throw new Error('Failed to create order');
+        }
+      })
+      .then((data) => {
+        console.log(data); // Handle the response data
+
+        if (data.message === 'Order created successfully') {
+          alert('Order created successfully');
+        } else {
+          alert('Failed to create order');
         }
       })
       .catch((error) => {
         console.error('Error:', error);
-        // Handle network error
+        alert('Failed to create order');
       });
   };
 
@@ -58,7 +65,7 @@ const Checkout = () => {
       <section>
         <Container>
           <Row>
-            <Col lg='8' md='6'>
+          <Col lg='8' md='6'>
               <h6 className='mb-4'>Shipping Address</h6>
               <form
                 action=''

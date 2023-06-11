@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Helmet from '../components/Helmet/Helmet';
 import CommonSection from '../components/UI/common-section/CommonSection';
 import { Container, Row, Col } from 'reactstrap';
@@ -9,8 +10,10 @@ import { useRef } from 'react';
 const Login = () => {
   const [enteredEmail, setEnteredEmail] = useState('');
   const [enteredPass, setEnteredPass] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // Added errorMessage state
   const loginNameRef = useRef();
   const loginPasswordRef = useRef();
+  const navigate = useNavigate();
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -29,6 +32,11 @@ const Login = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data); // Handle the response data
+        if (data.message === 'Login successful') {
+          navigate('/home');
+        } else if (data.message === 'Invalid email or password') {
+          setErrorMessage(data.message);
+        }
       })
       .catch((error) => {
         console.error('Error:', error); // Handle any errors
@@ -43,6 +51,7 @@ const Login = () => {
           <Row>
             <Col lg='6' md='6' sm='12' className='m-auto text-center'>
               <form className='form mb-5' onSubmit={submitHandler}>
+                {errorMessage && <div className='error-message'>{errorMessage}</div>} {/* Display error message if present */}
                 <div className='form__group'>
                   <input
                     type='email'

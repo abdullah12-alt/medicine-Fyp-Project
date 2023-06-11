@@ -33,6 +33,10 @@ const Register = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data); // Handle the response data
+
+        if (data.message === 'Order created successfully') {
+          alert('Order placed successfully. You will receive it in 3 days.');
+        }
       })
       .catch((error) => {
         console.error('Error:', error); // Handle any errors

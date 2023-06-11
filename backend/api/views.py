@@ -38,19 +38,38 @@ class UserRegistrationView(APIView):
 #             except User.DoesNotExist:
 #                 return Response({'message': 'Invalid email or password'}, status=status.HTTP_401_UNAUTHORIZED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class UserLoginView(APIView):
+#     def post(self, request):
+#         serializer = LoginUserSerializer(data=request.data)
+#         if serializer.is_valid():
+#             email = serializer.validated_data['email']
+#             password = serializer.validated_data['password']
+#             print(email)
+#             user = authenticate(request, email=email, password=password)
+#             if user is not User:
+#                     # Authentication successful
+#                 return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
+#             else:
+#                     # Authentication failed
+#                 return Response({'message': 'Invalid email or password'}, status=status.HTTP_401_UNAUTHORIZED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class UserLoginView(APIView):
     def post(self, request):
         serializer = LoginUserSerializer(data=request.data)
         if serializer.is_valid():
             email = serializer.validated_data['email']
             password = serializer.validated_data['password']
-            print(email)
-            user = authenticate(request, email=email, password=password)
-            if user is not User:
-                print(user)
-                # Authentication successful
-                return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
-            else:
-                # Authentication failed
+            try:
+                user = User.objects.get(email=email)
+                if user.password == password:
+                    # Authentication successful
+                    return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
+                else:
+                    # Authentication failed
+                    return Response({'message': 'Invalid email or password'}, status=status.HTTP_401_UNAUTHORIZED)
+            except User.DoesNotExist:
+                # User does not exist
                 return Response({'message': 'Invalid email or password'}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

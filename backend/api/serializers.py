@@ -4,7 +4,7 @@ class ShippingAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShippingAddress
         fields = ['name','email','phone','address','city','postal_code','country']
-        # exclude=['id']
+        
 
 
 class UserSerializer(serializers.ModelSerializer):
