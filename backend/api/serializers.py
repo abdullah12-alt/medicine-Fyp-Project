@@ -3,7 +3,8 @@ from .models import ShippingAddress,User,LoginUser
 class ShippingAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShippingAddress
-        fields = '__all__'
+        fields = ['name','email','phone','address','city','postal_code','country']
+        # exclude=['id']
 
 
 class UserSerializer(serializers.ModelSerializer):

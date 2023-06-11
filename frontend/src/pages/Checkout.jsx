@@ -26,11 +26,11 @@ const Checkout = () => {
       phone: enteredNumber,
       address: enteredAddress,
       city: enteredCity,
-      postalCode: enteredPostalCode,
+      postal_code: enteredPostalCode,
       country: enteredCountry,
     };
 
-    fetch('http://127.0.0.1:8000/create_order/', {
+    fetch('http://127.0.0.1:8000/api/create_order/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

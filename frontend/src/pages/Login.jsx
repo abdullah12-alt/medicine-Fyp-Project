@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import Helmet from '../components/Helmet/Helmet';
 import CommonSection from '../components/UI/common-section/CommonSection';
 import { Container, Row, Col } from 'reactstrap';
@@ -17,13 +17,24 @@ const Login = () => {
     const userLogin = {
       email: enteredEmail,
       password: enteredPass,
-     
     };
 
-  
-    console.log(userLogin);
+    fetch('http://127.0.0.1:8000/api/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userLogin),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data); // Handle the response data
+      })
+      .catch((error) => {
+        console.error('Error:', error); // Handle any errors
+      });
   };
-  
+
   return (
     <Helmet title='Login'>
       <CommonSection title='Login' />
@@ -31,10 +42,7 @@ const Login = () => {
         <Container>
           <Row>
             <Col lg='6' md='6' sm='12' className='m-auto text-center'>
-              <form 
-              
-              
-              className='form mb-5' onSubmit={submitHandler}>
+              <form className='form mb-5' onSubmit={submitHandler}>
                 <div className='form__group'>
                   <input
                     type='email'

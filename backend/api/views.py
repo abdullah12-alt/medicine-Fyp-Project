@@ -44,8 +44,10 @@ class UserLoginView(APIView):
         if serializer.is_valid():
             email = serializer.validated_data['email']
             password = serializer.validated_data['password']
+            print(email)
             user = authenticate(request, email=email, password=password)
             if user is not User:
+                print(user)
                 # Authentication successful
                 return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
             else:
